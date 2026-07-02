@@ -1,16 +1,18 @@
-# company-system-network-design
+# Company System Network Design
 
 Enterprise network design and implementation for a **Trading Floor Support Centre** supporting approximately **600 users** using **Cisco Packet Tracer**.
 
-The project follows Cisco's **Hierarchical Network Model** and implements redundancy, security, dynamic routing, wireless connectivity, centralized DHCP, and dual ISP connectivity.
+The project follows Cisco's **Hierarchical Network Model** and implements redundancy, security, dynamic routing, wireless connectivity, centralized DHCP services, and dual ISP connectivity.
 
 ---
 
-## Project Overview
+# Project Overview
 
-The company is relocating to a new three-floor building that currently has no network infrastructure. This project provides a scalable, resilient, and future-proof network design capable of supporting current business requirements and future expansion.
+The organization is relocating to a new three-floor building that currently has no existing network infrastructure.
 
-The design includes:
+This project presents a scalable, secure, and fault-tolerant network solution designed to satisfy current business requirements while supporting future growth.
+
+### Implemented Features
 
 - Hierarchical Network Architecture
 - Redundant Core Layer
@@ -24,8 +26,8 @@ The design includes:
 - Port Security
 - Wireless Access Points
 - VLAN Segmentation
-- Access Control Lists (ACL)
-- Server Room Infrastructure
+- Access Control Lists
+- Server Infrastructure
 
 ---
 
@@ -48,77 +50,39 @@ The design includes:
 
 ---
 
-# Hierarchical Design
+# Subnetting Design
 
-## Core Layer
+The company provided the base network **172.16.1.0**.
 
-Devices:
+Subnetting was carried out using **VLSM** to accommodate all departments while minimizing address wastage.
 
-- CORE-R1
-- CORE-R2
+### Host Requirements
 
-Responsibilities:
-
-- Internet Connectivity
-- OSPF Routing
-- NAT/PAT
-- Redundancy
-- Default Route Management
-
----
-
-## Distribution Layer
-
-Devices:
-
-- MLT-SW1
-- MLT-SW2
-
-Responsibilities:
-
-- Inter-VLAN Routing
-- DHCP Relay
-- OSPF
-- Redundant Links
+| Department          | Hosts Needed | Prefix | Usable Hosts |
+| ------------------- | ------------ | ------ | ------------ |
+| Sales & Marketing   | 120          | /25    | 126          |
+| HR & Logistics      | 120          | /25    | 126          |
+| Finance & Accounts  | 120          | /25    | 126          |
+| Administration & PR | 120          | /25    | 126          |
+| ICT                 | 120          | /25    | 126          |
+| Server Room         | 12           | /28    | 14           |
 
 ---
 
-## Access Layer
+## Department Subnets
 
-Devices:
-
-- SALE-SW
-- HR-SW
-- FINANCE-SW
-- ADMIN-SW
-- ICT-SW
-- SERVERROOM-SW
-
-Responsibilities:
-
-- End Device Connectivity
-- Wireless Connectivity
-- Port Security
-- VLAN Assignment
+| VLAN | Department          | Network         | Mask            | Gateway      | Broadcast    |
+| ---- | ------------------- | --------------- | --------------- | ------------ | ------------ |
+| 10   | Sales & Marketing   | 172.16.1.0/25   | 255.255.255.128 | 172.16.1.1   | 172.16.1.127 |
+| 20   | HR & Logistics      | 172.16.1.128/25 | 255.255.255.128 | 172.16.1.129 | 172.16.1.255 |
+| 30   | Finance & Accounts  | 172.16.2.0/25   | 255.255.255.128 | 172.16.2.1   | 172.16.2.127 |
+| 40   | Administration & PR | 172.16.2.128/25 | 255.255.255.128 | 172.16.2.129 | 172.16.2.255 |
+| 50   | ICT                 | 172.16.3.0/25   | 255.255.255.128 | 172.16.3.1   | 172.16.3.127 |
+| 60   | Server Room         | 172.16.3.128/28 | 255.255.255.240 | 172.16.3.129 | 172.16.3.143 |
 
 ---
 
-# IP Addressing Scheme
-
-## Department Networks
-
-| VLAN | Department         | Subnet          | Gateway      |
-| ---- | ------------------ | --------------- | ------------ |
-| 10   | Sales & Marketing  | 172.16.1.0/25   | 172.16.1.1   |
-| 20   | HR & Logistics     | 172.16.1.128/25 | 172.16.1.129 |
-| 30   | Finance & Accounts | 172.16.2.0/25   | 172.16.2.1   |
-| 40   | Admin & PR         | 172.16.2.128/25 | 172.16.2.129 |
-| 50   | ICT                | 172.16.3.0/25   | 172.16.3.1   |
-| 60   | Server Room        | 172.16.3.128/28 | 172.16.3.129 |
-
----
-
-## Router Links
+## Point-to-Point Networks
 
 | Connection        | Network         |
 | ----------------- | --------------- |
@@ -131,7 +95,7 @@ Responsibilities:
 
 ## ISP Networks
 
-| Link           | Subnet           |
+| Link           | Network          |
 | -------------- | ---------------- |
 | ISP1 ↔ CORE-R1 | 195.136.17.0/30  |
 | ISP2 ↔ CORE-R1 | 195.136.17.4/30  |
@@ -140,78 +104,132 @@ Responsibilities:
 
 ---
 
+# Hierarchical Design
+
+## Core Layer
+
+### Devices
+
+- CORE-R1
+- CORE-R2
+
+### Responsibilities
+
+- OSPF Routing
+- PAT/NAT
+- Internet Connectivity
+- Redundancy
+- Default Route Management
+
+---
+
+## Distribution Layer
+
+### Devices
+
+- MLT-SW1
+- MLT-SW2
+
+### Responsibilities
+
+- Inter-VLAN Routing
+- OSPF
+- DHCP Relay
+- Redundant Connectivity
+
+---
+
+## Access Layer
+
+### Devices
+
+- SALE-SW
+- HR-SW
+- FINANCE-SW
+- ADMIN-SW
+- ICT-SW
+- SERVERROOM-SW
+
+### Responsibilities
+
+- End Device Access
+- Wireless Connectivity
+- VLAN Assignment
+- Port Security
+
+---
+
 # Technologies Implemented
 
 - Cisco Packet Tracer
-- Hierarchical Network Design
 - VLAN Segmentation
-- Inter-VLAN Routing
 - OSPF Routing
-- DHCP Server
+- DHCP Services
 - DHCP Relay
 - SSH
-- NAT Overload (PAT)
+- NAT Overload
+- PAT
 - ACLs
+- Wireless LAN
 - Port Security
-- Wireless Access Points
-- Redundant ISP Connections
-- Dynamic IP Allocation
-- Static Server Addressing
+- Inter-VLAN Routing
+- Hierarchical Design
+- Redundant ISP Connectivity
 
 ---
 
 # Security Features
 
-### SSH
+## SSH
 
 Implemented on:
 
-- Core Routers
-- Layer 3 Switches
+- CORE-R1
+- CORE-R2
+- MLT-SW1
+- MLT-SW2
 
 Features:
 
 - RSA Key Generation
-- Local User Authentication
+- Local Authentication
 - SSH Version 2
 
 ---
 
-### Port Security
+## Port Security
 
-Configured on the Finance Department switch.
+Configured in the Finance Department.
 
-Security settings:
+Features:
 
-- Maximum MAC Address = 1
 - Sticky MAC Learning
-- Violation Mode = Shutdown
+- Maximum One Device
+- Violation Mode Shutdown
 
 ---
 
-### Black Hole VLAN
+## Black Hole VLAN
 
-Unused ports assigned to:
+Unused interfaces assigned to:
 
 ```text
 VLAN 99
 ```
 
-Unused interfaces are administratively disabled.
+Unused ports are administratively disabled.
 
 ---
 
-# Routing
+# OSPF Routing
 
 Dynamic routing protocol used:
-
-### OSPF
 
 ```cisco
 router ospf 10
 ```
 
-Single area implementation:
+Single Area Design:
 
 ```cisco
 Area 0
@@ -219,15 +237,15 @@ Area 0
 
 Advertised Networks:
 
-- VLAN Networks
-- Point-to-Point Links
-- ISP Connections
+- VLANs
+- Router Links
+- ISP Links
 
 ---
 
 # DHCP
 
-Dedicated DHCP Server deployed inside:
+Dedicated DHCP server deployed in:
 
 **VLAN 60 – Server Room**
 
@@ -249,7 +267,7 @@ Example:
 ip nat inside source list 1 interface Serial0/2/0 overload
 ```
 
-ACL:
+ACL Used:
 
 ```cisco
 access-list 1 permit 172.16.1.0 0.0.0.127
@@ -264,108 +282,144 @@ access-list 1 permit 172.16.3.128 0.0.0.15
 
 # Wireless Network
 
-Each department includes:
+Each department contains:
 
 - Access Point
 - Laptop
 - Tablet Device
 
-Wireless clients obtain IP addresses dynamically from the centralized DHCP server.
+Wireless clients receive IP addresses dynamically from the centralized DHCP server.
 
 ---
 
 # Verification and Testing
 
-````md
-# Screenshots
+## OSPF Neighbor Verification
 
-## Topology
+Demonstrates successful OSPF adjacency establishment.
 
-![Topology](images/topology.png)
+![OSPF Neighbor](images/ospf-neighbor.png)
 
-## OSPF Neighbor Status
+---
 
-![OSPF](images/ospf-neighbor.png)
+## DHCP Server Configuration
 
-## DHCP Server
+Dedicated DHCP services for all VLANs.
 
 ![DHCP Server](images/dhcp-server.png)
 
-## Dynamic IP Allocation
+---
+
+## Dynamic IP Assignment
+
+Clients successfully obtaining IP addresses dynamically.
 
 ![DHCP Client](images/ip-from-dhcp.png)
 
-## DNS Server
+---
+
+## DNS Server Verification
+
+DNS services configured in Server VLAN.
 
 ![DNS Server](images/dns-server.png)
 
+---
+
 ## SSH Access
 
-![SSH](images/ssh-access.png)
+Secure remote administration using SSH.
 
-## NAT Translation Table
+![SSH Access](images/ssh-access.png)
 
-![NAT](images/nat-translation.png)
+---
 
-## Port Security
+## NAT Translation Verification
+
+PAT translations generated successfully.
+
+![NAT Translation](images/nat-translation.png)
+
+---
+
+## Port Security Verification
+
+Finance Department sticky MAC configuration.
 
 ![Port Security](images/sticky-check.png)
 
-## Connectivity Testing
+---
+
+## End-to-End Connectivity Test
+
+Inter-VLAN communication verified successfully.
 
 ![Ping Test](images/ping-test.png)
 
 ---
 
-# Validation Performed
+# Validation Checklist
 
-✔ DHCP Address Assignment
+✔ VLAN Segmentation
 
-✔ Inter-VLAN Communication
+✔ Inter-VLAN Routing
 
-✔ OSPF Adjacencies
+✔ DHCP Address Allocation
 
-✔ SSH Access
+✔ OSPF Neighbor Formation
 
-✔ NAT Translation
+✔ SSH Connectivity
 
-✔ PAT Verification
+✔ PAT Translation
+
+✔ DNS Resolution
 
 ✔ Wireless Connectivity
 
 ✔ Port Security
 
-✔ End-to-End Ping
+✔ End-to-End Communication
 
 ✔ Redundant ISP Connectivity
 
 ---
 
-# Project Structure
+# Repository Structure
 
 ```text
-Hotel-Network-Design
+company-system-network-design
 │
 ├── README.md
-├── Hotel-Network.pkt
+├── company-system-network-design.pkt
+│
+├── configs
+│   ├── ADMIN-SW.txt
+│   ├── company-system-network-design.txt
+│   ├── CORE-R1.txt
+│   ├── CORE-R2.txt
+│   ├── FINANCE-SW.txt
+│   ├── HR-SW.txt
+│   ├── ICT-HR.txt
+│   ├── ISP1.txt
+│   ├── ISP2.txt
+│   ├── MLT-SW1.txt
+│   ├── MLT-SW2.txt
+│   ├── SALE-SW.txt
+│   └── SERVERROOM-SW.txt
 │
 ├── images
 │   ├── topology.png
-│   ├── ospf.png
-│   ├── sticky.png
-│   └── internal-ping.png
-│
-├── configs
-│   ├── CORE-R1.txt
-│   ├── CORE-R2.txt
-│   ├── MLT-SW1.txt
-│   ├── MLT-SW2.txt
-│   └── Access-Switches.txt
+│   ├── dhcp-server.png
+│   ├── dns-server.png
+│   ├── ip-from-dhcp.png
+│   ├── nat-translation.png
+│   ├── ospf-neighbor.png
+│   ├── ping-test.png
+│   ├── ssh-access.png
+│   └── sticky-check.png
 │
 └── docs
-    └── subnetting.xlsx
 ```
-````
 
 ---
 
@@ -383,32 +437,6 @@ Hotel-Network-Design
 
 Network Engineering Student
 
-Cisco Packet Tracer Enterprise Network Design Project
+Enterprise Network Design using Cisco Packet Tracer
 
 ---
-
-## Screenshots
-
-### Network Topology
-
-```markdown
-![Topology](images/topology.png)
-```
-
-### OSPF Verification
-
-```markdown
-![OSPF](images/ospf.png)
-```
-
-### Port Security
-
-```markdown
-![Port Security](images/sticky.png)
-```
-
-### End-to-End Ping
-
-```markdown
-![Ping](images/internal-ping.png)
-```
