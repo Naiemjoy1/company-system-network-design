@@ -1,4 +1,4 @@
-# Hotel Network Design
+# company-system-network-design
 
 Enterprise network design and implementation for a **Trading Floor Support Centre** supporting approximately **600 users** using **Cisco Packet Tracer**.
 
@@ -37,14 +37,14 @@ The design includes:
 
 # Building Layout
 
-| Floor | Department | Users | VLAN | Network |
-|-------|------------|-------|------|---------|
-| First Floor | Sales & Marketing | 120 | VLAN 10 | 172.16.1.0/25 |
-| First Floor | HR & Logistics | 120 | VLAN 20 | 172.16.1.128/25 |
-| Second Floor | Finance & Accounts | 120 | VLAN 30 | 172.16.2.0/25 |
-| Second Floor | Administration & Public Relations | 120 | VLAN 40 | 172.16.2.128/25 |
-| Third Floor | ICT | 120 | VLAN 50 | 172.16.3.0/25 |
-| Third Floor | Server Room | 12 | VLAN 60 | 172.16.3.128/28 |
+| Floor        | Department                        | Users | VLAN    | Network         |
+| ------------ | --------------------------------- | ----- | ------- | --------------- |
+| First Floor  | Sales & Marketing                 | 120   | VLAN 10 | 172.16.1.0/25   |
+| First Floor  | HR & Logistics                    | 120   | VLAN 20 | 172.16.1.128/25 |
+| Second Floor | Finance & Accounts                | 120   | VLAN 30 | 172.16.2.0/25   |
+| Second Floor | Administration & Public Relations | 120   | VLAN 40 | 172.16.2.128/25 |
+| Third Floor  | ICT                               | 120   | VLAN 50 | 172.16.3.0/25   |
+| Third Floor  | Server Room                       | 12    | VLAN 60 | 172.16.3.128/28 |
 
 ---
 
@@ -107,36 +107,36 @@ Responsibilities:
 
 ## Department Networks
 
-| VLAN | Department | Subnet | Gateway |
-|------|------------|--------|---------|
-|10|Sales & Marketing|172.16.1.0/25|172.16.1.1|
-|20|HR & Logistics|172.16.1.128/25|172.16.1.129|
-|30|Finance & Accounts|172.16.2.0/25|172.16.2.1|
-|40|Admin & PR|172.16.2.128/25|172.16.2.129|
-|50|ICT|172.16.3.0/25|172.16.3.1|
-|60|Server Room|172.16.3.128/28|172.16.3.129|
+| VLAN | Department         | Subnet          | Gateway      |
+| ---- | ------------------ | --------------- | ------------ |
+| 10   | Sales & Marketing  | 172.16.1.0/25   | 172.16.1.1   |
+| 20   | HR & Logistics     | 172.16.1.128/25 | 172.16.1.129 |
+| 30   | Finance & Accounts | 172.16.2.0/25   | 172.16.2.1   |
+| 40   | Admin & PR         | 172.16.2.128/25 | 172.16.2.129 |
+| 50   | ICT                | 172.16.3.0/25   | 172.16.3.1   |
+| 60   | Server Room        | 172.16.3.128/28 | 172.16.3.129 |
 
 ---
 
 ## Router Links
 
-| Connection | Network |
-|------------|---------|
-|MLT-SW1 ↔ CORE-R1|172.16.3.144/30|
-|MLT-SW1 ↔ CORE-R2|172.16.3.148/30|
-|MLT-SW2 ↔ CORE-R1|172.16.3.152/30|
-|MLT-SW2 ↔ CORE-R2|172.16.3.156/30|
+| Connection        | Network         |
+| ----------------- | --------------- |
+| MLT-SW1 ↔ CORE-R1 | 172.16.3.144/30 |
+| MLT-SW1 ↔ CORE-R2 | 172.16.3.148/30 |
+| MLT-SW2 ↔ CORE-R1 | 172.16.3.152/30 |
+| MLT-SW2 ↔ CORE-R2 | 172.16.3.156/30 |
 
 ---
 
 ## ISP Networks
 
-| Link | Subnet |
-|-------|--------|
-|ISP1 ↔ CORE-R1|195.136.17.0/30|
-|ISP2 ↔ CORE-R1|195.136.17.4/30|
-|ISP1 ↔ CORE-R2|195.136.17.8/30|
-|ISP2 ↔ CORE-R2|195.136.17.12/30|
+| Link           | Subnet           |
+| -------------- | ---------------- |
+| ISP1 ↔ CORE-R1 | 195.136.17.0/30  |
+| ISP2 ↔ CORE-R1 | 195.136.17.4/30  |
+| ISP1 ↔ CORE-R2 | 195.136.17.8/30  |
+| ISP2 ↔ CORE-R2 | 195.136.17.12/30 |
 
 ---
 
@@ -276,21 +276,44 @@ Wireless clients obtain IP addresses dynamically from the centralized DHCP serve
 
 # Verification and Testing
 
-## OSPF Neighbor Verification
+````md
+# Screenshots
 
-![OSPF](images/ospf.png)
+## Topology
 
----
+![Topology](images/topology.png)
 
-## Port Security Verification
+## OSPF Neighbor Status
 
-![Port Security](images/sticky.png)
+![OSPF](images/ospf-neighbor.png)
 
----
+## DHCP Server
 
-## Connectivity Test
+![DHCP Server](images/dhcp-server.png)
 
-![Ping Test](images/internal-ping.png)
+## Dynamic IP Allocation
+
+![DHCP Client](images/ip-from-dhcp.png)
+
+## DNS Server
+
+![DNS Server](images/dns-server.png)
+
+## SSH Access
+
+![SSH](images/ssh-access.png)
+
+## NAT Translation Table
+
+![NAT](images/nat-translation.png)
+
+## Port Security
+
+![Port Security](images/sticky-check.png)
+
+## Connectivity Testing
+
+![Ping Test](images/ping-test.png)
 
 ---
 
@@ -342,6 +365,7 @@ Hotel-Network-Design
 └── docs
     └── subnetting.xlsx
 ```
+````
 
 ---
 
