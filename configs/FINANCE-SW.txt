@@ -1,0 +1,49 @@
+
+
+config t
+
+hostname FINANCE-SW
+line console 0
+password cisco
+login
+exit
+
+enable password cisco
+no ip domain-lookup
+banner motd #NO Unauthorised Access!!!#
+service password-encryption
+
+do wr
+
+interface range fa0/1-2
+switchport mode trunk 
+exit 
+
+vlan 30
+name Finance
+vlan 99
+name BlackHole
+exit
+int range f0/3-24
+switchport mode access 
+switchport access vlan 30
+exit 
+int range g0/1-2
+switchport mode access 
+switchport access vlan 99
+exit 
+do wr
+
+int range f0/3-24
+switchport port-security maximum 1
+switchport port-security mac-address sticky 
+switchport port-security violation shutdown 
+exit 
+do wr
+
+int range f0/3-24
+switchport port-security maximum 1
+switchport port-security mac-address sticky 
+switchport port-security violation shutdown 
+exit 
+do wr

@@ -1,0 +1,79 @@
+config t
+
+hostname CORE-R1
+line console 0
+password cisco
+login
+exit
+
+enable password cisco
+no ip domain-lookup
+banner motd #NO Unauthorised Access!!!#
+service password-encryption
+
+do wr
+
+ip domain name cisco.net
+username admin password cisco
+crypto key generate rsa 
+1024
+
+line  vty 0 15
+login local 
+transport input ssh
+exit
+do wr
+
+ip ssh version 2
+do wr
+int g0/0
+ip address 172.16.3.146 255.255.255.252
+no shutdown 
+exit 
+int g0/1
+ip address 172.16.3.154 255.255.255.252
+no shutdown 
+exit 
+int se0/2/0
+clock rate 64000
+ip address 195.136.17.1 255.255.255.252
+no shutdown 
+exit 
+int se0/2/1
+clock rate 64000
+ip address 195.136.17.5 255.255.255.252
+no shutdown 
+exit 
+do wr
+
+
+router ospf 10
+router-id 3.3.3.3
+
+network 172.16.3.144 0.0.0.3 area 0
+network 172.16.3.152 0.0.0.3 area 0
+network 195.136.17.0 0.0.0.3 area 0
+network 195.136.17.4 0.0.0.3 area 0
+do wr
+
+ip nat inside source list 1 int se0/2/0 overload 
+ip nat inside source list 1 int se0/2/1 overload 
+access-list 1 permit 172.16.1.0 0.0.0.127
+access-list 1 permit 172.16.1.128 0.0.0.127
+access-list 1 permit 172.16.2.0 0.0.0.127
+access-list 1 permit 172.16.2.128 0.0.0.127
+access-list 1 permit 172.16.3.0 0.0.0.127
+access-list 1 permit 172.16.3.128 0.0.0.15
+
+int range g0/0-1
+ip nat inside 
+exit 
+int se0/2/0
+ip nat outside 
+int se0/2/1
+ip nat outside 
+do wr
+
+ip route 0.0.0.0 0.0.0.0 se0/2/0
+ip route 0.0.0.0 0.0.0.0 se0/2/1 70
+do wr

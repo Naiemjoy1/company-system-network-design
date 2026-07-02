@@ -1,0 +1,37 @@
+en 
+config t
+
+hostname SALE-SW
+line console 0
+password cisco
+login
+exit
+
+enable password cisco
+no ip domain-lookup
+banner motd #NO Unauthorised Access!!!#
+service password-encryption
+
+do wr
+
+interface range fa0/1-2
+switchport mode trunk 
+exit 
+
+vlan 10
+name SALE
+exit 
+interface range f0/3-24
+switchport mode access 
+exit 
+do wr
+vlan 99
+name BlackHole
+exit 
+
+interface range g0/1-2
+switchport mode access 
+switchport access vlan 99
+shutdown 
+exit 
+do wr

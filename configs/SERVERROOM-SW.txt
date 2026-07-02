@@ -1,0 +1,33 @@
+config t
+
+hostname SERVERROOM-SW
+line console 0
+password cisco
+login
+exit
+
+enable password cisco
+no ip domain-lookup
+banner motd #NO Unauthorised Access!!!#
+service password-encryption
+
+do wr
+
+interface range fa0/1-2
+switchport mode trunk 
+exit 
+
+vlan 60
+name ServerRoom
+vlan 99
+name BlackHole
+exit
+int range f0/3-24
+switchport mode access 
+switchport access vlan 60
+exit 
+int range g0/1-2
+switchport mode access 
+switchport access vlan 99
+exit 
+do wr
