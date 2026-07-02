@@ -429,20 +429,8 @@ company-system-network-design
 
 ---
 
-# Software Used
-
-- Cisco Packet Tracer 8.x
-- Cisco IOS
-- GitHub
-
----
-
 # Author
 
 **Naiem Hasan**
-
-Network Engineering Student
-
-Cisco Packet Tracer Enterprise Network Design Project
 
 ---
