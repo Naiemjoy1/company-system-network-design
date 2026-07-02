@@ -50,57 +50,57 @@ This project presents a scalable, secure, and fault-tolerant network solution de
 
 ---
 
-# Subnetting Design
+# Subnet Design
 
-The company provided the base network **172.16.1.0**.
+The company provided the address space beginning from **172.16.1.0**.
 
-Subnetting was carried out using **VLSM** to accommodate all departments while minimizing address wastage.
+Variable Length Subnet Masking (**VLSM**) was used to allocate subnets efficiently based on departmental requirements.
 
-### Host Requirements
+## Host Requirements
 
-| Department          | Hosts Needed | Prefix | Usable Hosts |
-| ------------------- | ------------ | ------ | ------------ |
-| Sales & Marketing   | 120          | /25    | 126          |
-| HR & Logistics      | 120          | /25    | 126          |
-| Finance & Accounts  | 120          | /25    | 126          |
-| Administration & PR | 120          | /25    | 126          |
-| ICT                 | 120          | /25    | 126          |
-| Server Room         | 12           | /28    | 14           |
+| Department               | Hosts Required | Prefix | Available Hosts |
+| ------------------------ | -------------- | ------ | --------------- |
+| Sales & Marketing        | 120            | /25    | 126             |
+| HR & Logistics           | 120            | /25    | 126             |
+| Finance & Accounts       | 120            | /25    | 126             |
+| Admin & Public Relations | 120            | /25    | 126             |
+| ICT                      | 120            | /25    | 126             |
+| Server Room              | 12             | /28    | 14              |
 
 ---
 
-## Department Subnets
+## Departmental Subnets
 
-| VLAN | Department          | Network         | Mask            | Gateway      | Broadcast    |
-| ---- | ------------------- | --------------- | --------------- | ------------ | ------------ |
-| 10   | Sales & Marketing   | 172.16.1.0/25   | 255.255.255.128 | 172.16.1.1   | 172.16.1.127 |
-| 20   | HR & Logistics      | 172.16.1.128/25 | 255.255.255.128 | 172.16.1.129 | 172.16.1.255 |
-| 30   | Finance & Accounts  | 172.16.2.0/25   | 255.255.255.128 | 172.16.2.1   | 172.16.2.127 |
-| 40   | Administration & PR | 172.16.2.128/25 | 255.255.255.128 | 172.16.2.129 | 172.16.2.255 |
-| 50   | ICT                 | 172.16.3.0/25   | 255.255.255.128 | 172.16.3.1   | 172.16.3.127 |
-| 60   | Server Room         | 172.16.3.128/28 | 255.255.255.240 | 172.16.3.129 | 172.16.3.143 |
+| VLAN | Department         | Network Address | Prefix | Mask            | Gateway      | Host Range                  | Broadcast    |
+| ---- | ------------------ | --------------- | ------ | --------------- | ------------ | --------------------------- | ------------ |
+| 10   | Sales & Marketing  | 172.16.1.0      | /25    | 255.255.255.128 | 172.16.1.1   | 172.16.1.1 – 172.16.1.126   | 172.16.1.127 |
+| 20   | HR & Logistics     | 172.16.1.128    | /25    | 255.255.255.128 | 172.16.1.129 | 172.16.1.129 – 172.16.1.254 | 172.16.1.255 |
+| 30   | Finance & Accounts | 172.16.2.0      | /25    | 255.255.255.128 | 172.16.2.1   | 172.16.2.1 – 172.16.2.126   | 172.16.2.127 |
+| 40   | Admin & PR         | 172.16.2.128    | /25    | 255.255.255.128 | 172.16.2.129 | 172.16.2.129 – 172.16.2.254 | 172.16.2.255 |
+| 50   | ICT                | 172.16.3.0      | /25    | 255.255.255.128 | 172.16.3.1   | 172.16.3.1 – 172.16.3.126   | 172.16.3.127 |
+| 60   | Server Room        | 172.16.3.128    | /28    | 255.255.255.240 | 172.16.3.129 | 172.16.3.129 – 172.16.3.142 | 172.16.3.143 |
 
 ---
 
 ## Point-to-Point Networks
 
-| Connection        | Network         |
-| ----------------- | --------------- |
-| MLT-SW1 ↔ CORE-R1 | 172.16.3.144/30 |
-| MLT-SW1 ↔ CORE-R2 | 172.16.3.148/30 |
-| MLT-SW2 ↔ CORE-R1 | 172.16.3.152/30 |
-| MLT-SW2 ↔ CORE-R2 | 172.16.3.156/30 |
+| Connection        | Network         | Usable Hosts |
+| ----------------- | --------------- | ------------ |
+| MLT-SW1 ↔ CORE-R1 | 172.16.3.144/30 | 145 – 146    |
+| MLT-SW1 ↔ CORE-R2 | 172.16.3.148/30 | 149 – 150    |
+| MLT-SW2 ↔ CORE-R1 | 172.16.3.152/30 | 153 – 154    |
+| MLT-SW2 ↔ CORE-R2 | 172.16.3.156/30 | 157 – 158    |
 
 ---
 
-## ISP Networks
+## ISP Public Addressing
 
-| Link           | Network          |
-| -------------- | ---------------- |
-| ISP1 ↔ CORE-R1 | 195.136.17.0/30  |
-| ISP2 ↔ CORE-R1 | 195.136.17.4/30  |
-| ISP1 ↔ CORE-R2 | 195.136.17.8/30  |
-| ISP2 ↔ CORE-R2 | 195.136.17.12/30 |
+| Connection     | Network          | Router IP     | ISP IP        |
+| -------------- | ---------------- | ------------- | ------------- |
+| CORE-R1 ↔ ISP1 | 195.136.17.0/30  | 195.136.17.1  | 195.136.17.2  |
+| CORE-R1 ↔ ISP2 | 195.136.17.4/30  | 195.136.17.5  | 195.136.17.6  |
+| CORE-R2 ↔ ISP1 | 195.136.17.8/30  | 195.136.17.9  | 195.136.17.10 |
+| CORE-R2 ↔ ISP2 | 195.136.17.12/30 | 195.136.17.13 | 195.136.17.14 |
 
 ---
 
@@ -108,40 +108,40 @@ Subnetting was carried out using **VLSM** to accommodate all departments while m
 
 ## Core Layer
 
-### Devices
+Devices
 
 - CORE-R1
 - CORE-R2
 
-### Responsibilities
+Responsibilities
 
 - OSPF Routing
-- PAT/NAT
+- NAT/PAT
 - Internet Connectivity
-- Redundancy
-- Default Route Management
+- Default Routing
+- ISP Redundancy
 
 ---
 
 ## Distribution Layer
 
-### Devices
+Devices
 
 - MLT-SW1
 - MLT-SW2
 
-### Responsibilities
+Responsibilities
 
 - Inter-VLAN Routing
 - OSPF
 - DHCP Relay
-- Redundant Connectivity
+- Redundant Links
 
 ---
 
 ## Access Layer
 
-### Devices
+Devices
 
 - SALE-SW
 - HR-SW
@@ -150,7 +150,7 @@ Subnetting was carried out using **VLSM** to accommodate all departments while m
 - ICT-SW
 - SERVERROOM-SW
 
-### Responsibilities
+Responsibilities
 
 - End Device Access
 - Wireless Connectivity
@@ -163,18 +163,18 @@ Subnetting was carried out using **VLSM** to accommodate all departments while m
 
 - Cisco Packet Tracer
 - VLAN Segmentation
-- OSPF Routing
-- DHCP Services
+- Inter-VLAN Routing
+- OSPF
+- DHCP Server
 - DHCP Relay
 - SSH
 - NAT Overload
 - PAT
-- ACLs
-- Wireless LAN
+- ACL
+- Wireless Access Points
 - Port Security
-- Inter-VLAN Routing
-- Hierarchical Design
-- Redundant ISP Connectivity
+- Redundant ISP Connections
+- Static Server Addressing
 
 ---
 
@@ -182,7 +182,7 @@ Subnetting was carried out using **VLSM** to accommodate all departments while m
 
 ## SSH
 
-Implemented on:
+Configured on:
 
 - CORE-R1
 - CORE-R2
@@ -199,12 +199,14 @@ Features:
 
 ## Port Security
 
-Configured in the Finance Department.
+Implemented on:
+
+Finance & Accounts Department
 
 Features:
 
 - Sticky MAC Learning
-- Maximum One Device
+- Maximum 1 Device
 - Violation Mode Shutdown
 
 ---
@@ -223,33 +225,33 @@ Unused ports are administratively disabled.
 
 # OSPF Routing
 
-Dynamic routing protocol used:
+Routing Protocol:
 
 ```cisco
 router ospf 10
 ```
 
-Single Area Design:
+Area:
 
 ```cisco
 Area 0
 ```
 
-Advertised Networks:
+Advertised Networks
 
-- VLANs
-- Router Links
-- ISP Links
+- Department VLANs
+- Router Interconnections
+- ISP Networks
 
 ---
 
 # DHCP
 
-Dedicated DHCP server deployed in:
+Dedicated DHCP Server deployed inside:
 
-**VLAN 60 – Server Room**
+**Server Room (VLAN 60)**
 
-DHCP relay configured using:
+DHCP Relay:
 
 ```cisco
 ip helper-address 172.16.3.130
@@ -259,7 +261,7 @@ ip helper-address 172.16.3.130
 
 # NAT Configuration
 
-PAT configured on both Core Routers.
+PAT configured on Core Routers.
 
 Example:
 
@@ -267,7 +269,7 @@ Example:
 ip nat inside source list 1 interface Serial0/2/0 overload
 ```
 
-ACL Used:
+ACL
 
 ```cisco
 access-list 1 permit 172.16.1.0 0.0.0.127
@@ -288,7 +290,7 @@ Each department contains:
 - Laptop
 - Tablet Device
 
-Wireless clients receive IP addresses dynamically from the centralized DHCP server.
+Wireless clients receive addresses dynamically from the centralized DHCP server.
 
 ---
 
@@ -296,63 +298,63 @@ Wireless clients receive IP addresses dynamically from the centralized DHCP serv
 
 ## OSPF Neighbor Verification
 
-Demonstrates successful OSPF adjacency establishment.
+Successful OSPF adjacency formation.
 
 ![OSPF Neighbor](images/ospf-neighbor.png)
 
 ---
 
-## DHCP Server Configuration
+## DHCP Server
 
-Dedicated DHCP services for all VLANs.
+Dedicated DHCP pools for all VLANs.
 
 ![DHCP Server](images/dhcp-server.png)
 
 ---
 
-## Dynamic IP Assignment
+## Dynamic IP Allocation
 
-Clients successfully obtaining IP addresses dynamically.
+Clients successfully receiving IP addresses.
 
-![DHCP Client](images/ip-from-dhcp.png)
+![IP Assignment](images/ip-from-dhcp.png)
 
 ---
 
 ## DNS Server Verification
 
-DNS services configured in Server VLAN.
+DNS services hosted inside Server VLAN.
 
 ![DNS Server](images/dns-server.png)
 
 ---
 
-## SSH Access
+## SSH Remote Access
 
-Secure remote administration using SSH.
+Secure remote administration.
 
 ![SSH Access](images/ssh-access.png)
 
 ---
 
-## NAT Translation Verification
+## NAT Translation
 
-PAT translations generated successfully.
+PAT translation table verification.
 
 ![NAT Translation](images/nat-translation.png)
 
 ---
 
-## Port Security Verification
+## Port Security
 
-Finance Department sticky MAC configuration.
+Sticky MAC verification.
 
 ![Port Security](images/sticky-check.png)
 
 ---
 
-## End-to-End Connectivity Test
+## Connectivity Testing
 
-Inter-VLAN communication verified successfully.
+Successful communication between departments.
 
 ![Ping Test](images/ping-test.png)
 
@@ -364,23 +366,27 @@ Inter-VLAN communication verified successfully.
 
 ✔ Inter-VLAN Routing
 
-✔ DHCP Address Allocation
-
 ✔ OSPF Neighbor Formation
 
+✔ DHCP Functionality
+
+✔ Dynamic Address Allocation
+
 ✔ SSH Connectivity
+
+✔ NAT Overload
 
 ✔ PAT Translation
 
 ✔ DNS Resolution
 
-✔ Wireless Connectivity
-
 ✔ Port Security
 
-✔ End-to-End Communication
+✔ Wireless Connectivity
 
-✔ Redundant ISP Connectivity
+✔ Inter-Department Communication
+
+✔ ISP Redundancy
 
 ---
 
@@ -409,14 +415,14 @@ company-system-network-design
 │
 ├── images
 │   ├── topology.png
+│   ├── ospf-neighbor.png
 │   ├── dhcp-server.png
 │   ├── dns-server.png
 │   ├── ip-from-dhcp.png
 │   ├── nat-translation.png
-│   ├── ospf-neighbor.png
-│   ├── ping-test.png
 │   ├── ssh-access.png
-│   └── sticky-check.png
+│   ├── sticky-check.png
+│   └── ping-test.png
 │
 └── docs
 ```
@@ -437,6 +443,6 @@ company-system-network-design
 
 Network Engineering Student
 
-Enterprise Network Design using Cisco Packet Tracer
+Cisco Packet Tracer Enterprise Network Design Project
 
 ---
